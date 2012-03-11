@@ -1,4 +1,4 @@
-package YetiMap;
+package net.yeticraft.xxtraineexx.YetiMap;
 
 import java.awt.image.BufferedImage;
 import java.io.File;

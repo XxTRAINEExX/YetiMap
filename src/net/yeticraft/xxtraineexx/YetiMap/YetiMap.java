@@ -1,4 +1,4 @@
-package YetiMap;
+package net.yeticraft.xxtraineexx.YetiMap;
 
 import java.util.logging.Logger;
 
@@ -21,7 +21,7 @@ public class YetiMap extends JavaPlugin {
 	// Run this sub when the plugin is enabled	
 	public void onEnable() {
 		// log to the minecraft logger 
-		log.info("Loading YetiMap");
+		log.info("Loading net.yeticraft.xxtraineexx.YetiMap");
 	}
 
 	// run this sub when the player issues a command
@@ -168,6 +168,6 @@ public class YetiMap extends JavaPlugin {
 	// Run this sub when the plugin is disabled
 	public void onDisable() {
 
-		log.info("Unloading YetiMap");
+		log.info("Unloading net.yeticraft.xxtraineexx.YetiMap");
 	}
 }
