@@ -1,0 +1,9 @@
+name: YetiMap
+main: YetiMap.YetiMap
+version: 1.0
+description: >
+             YetiMap
+commands:
+  map:
+    description: Interact with the YetiMap plugin
+    usage: "Usage: '/map [yetonia, nether, the_end, reset]'"
