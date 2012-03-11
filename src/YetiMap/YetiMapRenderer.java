@@ -57,8 +57,8 @@ public class YetiMapRenderer extends MapRenderer {
 		
 		// creating a byte to store the byte value of the current players location. Adding in an offset because we moved spawn. 
 		// Dividing by 4000 to get relative position on a 128 pixel map.  Multiplying by 126 to determine actual position on the smaller map (128 wraps the cursor on the map)
-		byte xloc = (byte)Math.rint(((player.getLocation().getX() + 2042.5) / 4000.0) * 126.0); //the +2042.5 is the offset for new spawn
-		byte yloc = (byte)Math.rint(((player.getLocation().getZ() - 1007.5) / 4000.0) * 126.0); //the -1007.5 is the offset for new spawn
+		byte xloc = (byte)Math.rint(((player.getLocation().getX()) / 4000.0) * 126.0); //the +2042.5 is the offset for new spawn
+		byte yloc = (byte)Math.rint(((player.getLocation().getZ()) / 4000.0) * 126.0); //the -1007.5 is the offset for new spawn
 		
 		//Check to see if the new xloc is different than the current cursor position... if so...move it.
 		if (xloc != cursor.getX()){cursor.setX((byte)xloc);} 
@@ -91,7 +91,7 @@ public class YetiMapRenderer extends MapRenderer {
 				
 				
 				BufferedImage img = null;
-				img = ImageIO.read(new File("/home/minecraft/plugins/yetimap/yetonia128.png"));
+				img = ImageIO.read(new File("/home/minecraft/plugins/yetimap/yeticraft128.png"));
 				canvas.drawImage(0, 0, img);
 				setDirty(player.getName(), false);
 				player.sendMap(map);
@@ -104,34 +104,47 @@ public class YetiMapRenderer extends MapRenderer {
 			World world = map.getWorld();	
 			
 			byte buffer[][] = new byte[128][128];
-			double worldx = -4000 + (-2042.5);
-			double worldz = -4000 + (1007.5);
-									
+			double worldx = -4000;
+			double worldz = -4000;
+												
 				for (int canvasX = 0; canvasX < 128; ++canvasX)
 				{
-					worldz = -4000 + (1007.5);
+					worldz = -4000;
 					for (int canvasY = 0; canvasY < 128; ++canvasY)
 					{
 						
 						
 						int worldY = world.getHighestBlockAt((int)worldx, (int)worldz).getY();
 						
+						// This should get a better picture of the terrain. Cycling down through the AIR until we reach a non-air block. Previously we were using a single -1 which
+						// may get us another air block.
+						while (world.getBlockAt((int)worldx, worldY, (int)worldz).getType()==Material.AIR && worldY > 0){
+							worldY = worldY - 1;
+						}
+						
+						/*
 						if (world.getHighestBlockAt((int)worldx, (int)worldz).getType()==Material.AIR) {
 							worldY = worldY - 1;
 							}
+						*/
 						
 						Material type = world.getBlockAt((int)worldx, worldY, (int)worldz).getType();
 						if (type == Material.WATER || type==Material.STATIONARY_WATER || type==Material.WATER_LILY) {buffer[canvasX][canvasY] = (byte)48;}
 						else if (type == Material.DIRT) {buffer[canvasX][canvasY] = (byte)40;}
 						else if (type == Material.GRASS || type==Material.LONG_GRASS) {buffer[canvasX][canvasY] = (byte)4;}
 						else if (type==Material.LEAVES) {buffer[canvasX][canvasY] = (byte)28;}
-						else if (type == Material.WOOD || type == Material.LOG) {buffer[canvasX][canvasY] = (byte)52;}
+						else if (type == Material.WOOD || type == Material.WOOD_STAIRS || type == Material.LOG) {buffer[canvasX][canvasY] = (byte)52;}
 						else if (type == Material.SNOW || type==Material.SNOW_BALL || type==Material.SNOW_BLOCK) {buffer[canvasX][canvasY] = MapPalette.matchColor(255,255,255);}
 						else if (type == Material.ICE) {buffer[canvasX][canvasY] = MapPalette.matchColor(230,230,250);}
 						else if (type == Material.LAVA || type==Material.STATIONARY_LAVA) {buffer[canvasX][canvasY] = (byte)16;}
 						else if (type == Material.STONE || type == Material.COBBLESTONE ||type == Material.GRAVEL) {buffer[canvasX][canvasY] = (byte)12;}
 						else if (type == Material.SAND || type == Material.SANDSTONE) {buffer[canvasX][canvasY] = (byte)8;}
-						else {buffer[canvasX][canvasY] = (byte)4;}
+						else {
+							// The following line was for troubleshooting missing pixels on the map.
+							// player.sendMessage("Block at X:" + (int)worldx + " Y:" + worldY + " Z:" + (int)worldz + "  is " + type.toString());
+							// Making all missed pixels green.
+							buffer[canvasX][canvasY] = (byte)4;
+						}
 						
 						worldz = worldz + 62.5;
 						
@@ -149,11 +162,14 @@ public class YetiMapRenderer extends MapRenderer {
 				}
 				
 			setDirty(player.getName(), false);
+			// The following was to verify the player dirty status was toggling.
+			// player.sendMessage("Player dirty status: " + isDirty(player.getName().toString()));
+			
+			// The following was to verify the highest blocks were showing properly in Taiga
+			// player.sendMessage("Taiga block shows: " + world.getHighestBlockAt(2162, 3603).getType().toString());
+			
 			
 			/*}		
-			
-						
-				
 			
 			
 				

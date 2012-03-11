@@ -51,20 +51,20 @@ public class YetiMap extends JavaPlugin {
 			
 				// Check to see if they typed any arguments
 				if (args.length < 1) {
-					player.sendMessage("Missing Argument.. did you type /map [yetonia, nether, the_end, reset]?");
+					player.sendMessage("Missing Argument.. did you type /map [yeticraft, nether, the_end, reset]?");
 					return false;
 				}
 
 				//Check to see if they typed too many arguments
 				if (args.length > 1) {
 					
-					player.sendMessage("Too many Arguments.. did you type /map [yetonia, nether, the_end, reset]?");
+					player.sendMessage("Too many Arguments.. did you type /map [yeticraft, nether, the_end, reset]?");
 					return false;
 					
 				}
 				
 				//Check to see if they typed "show" as the first argument after /map
-				if (args[0].equalsIgnoreCase("yetonia")) {
+				if (args[0].equalsIgnoreCase("yeticraft")) {
 					
 					//clear the current map
 					renderer.setDirty(player.getName(), true);
@@ -78,7 +78,7 @@ public class YetiMap extends JavaPlugin {
 										
 					// Send the player the entire map
 					//player.sendMap(map);
-					world = "yetonia";
+					world = "yeticraft";
 					
 					// Call the applytomap() function in the maplines object we just created called renderer. Pass it our map 
 					renderer.applyToMap(map, world);
@@ -151,7 +151,7 @@ public class YetiMap extends JavaPlugin {
 					
 				}
 				
-				player.sendMessage("You did not enter a valid command. Try /map [yetonia, nether, the_end, reset]");
+				player.sendMessage("You did not enter a valid command. Try /map [yeticraft, nether, the_end, reset]");
 				return false;
 			}
 			player.sendMessage("There is not a map in your hand.");
