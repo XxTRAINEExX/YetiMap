@@ -161,6 +161,21 @@ public class YetiMapRenderer extends MapRenderer {
 					}
 				}
 				
+				//Some code to paint the lines (Red line)
+				for (int canvasX = 0; canvasX < 128; ++canvasX) {canvas.setPixel(canvasX, 27, MapPalette.matchColor(255,0,0));}
+				//Some code to paint the lines (Red/Black line)
+				for (int canvasX = 0; canvasX < 128; ++canvasX) {canvas.setPixel(canvasX, 54, MapPalette.matchColor(0,0,0));}
+				//Some code to paint the lines (Blue/Black line)
+				for (int canvasX = 0; canvasX < 128; ++canvasX) {canvas.setPixel(canvasX, 75, MapPalette.matchColor(0,0,0));}
+				//Some code to paint the lines (Blue line)
+				for (int canvasX = 0; canvasX < 128; ++canvasX) {canvas.setPixel(canvasX, 102, MapPalette.matchColor(0,0,255));}
+				
+				//Making spawn
+				for (int canvasX = 57; canvasX < 73; ++canvasX) {canvas.setPixel(canvasX, 57, MapPalette.matchColor(0,0,0));}
+				for (int canvasX = 57; canvasX < 73; ++canvasX) {canvas.setPixel(canvasX, 72, MapPalette.matchColor(0,0,0));}
+				for (int canvasY = 57; canvasY < 73; ++canvasY) {canvas.setPixel(57, canvasY, MapPalette.matchColor(0,0,0));}
+				for (int canvasY = 57; canvasY < 73; ++canvasY) {canvas.setPixel(72, canvasY, MapPalette.matchColor(0,0,0));}
+				
 			setDirty(player.getName(), false);
 			// The following was to verify the player dirty status was toggling.
 			// player.sendMessage("Player dirty status: " + isDirty(player.getName().toString()));
