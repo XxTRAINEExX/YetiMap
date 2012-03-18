@@ -21,20 +21,18 @@ public class YetiMapRenderer extends MapRenderer {
 	private boolean dirty;
 	private MapCursor cursor = new MapCursor((byte)0, (byte)0, (byte)0,	MapCursor.Type.WHITE_POINTER.getValue(), true);
 	Logger log = Logger.getLogger("Minecraft");
-
 	
 	
 //Method to remove other renderers and add my image
 	
-	public void applyToMap(MapView map, String world) {
-		if (!this.overlay) {
-			//remove all non-vanilla renderers
+	public void applyToMap(MapView map, String world, Player player) {
+	
 		    for (MapRenderer renderer : map.getRenderers()) {
-		    	//if (!renderer.getClass().toString().equalsIgnoreCase("class org.bukkit.craftbukkit.map.CraftMapRenderer")) {
+		    	//if (!(renderer instanceof YetiMapRenderer))
+		    	//{
 		    		map.removeRenderer(renderer);
 		    	//}
 		    }
-		}
 		
 		// Then add a new NameListRenderer
         map.addRenderer(this);
@@ -42,8 +40,6 @@ public class YetiMapRenderer extends MapRenderer {
 	}
 
 	
-	
-
 	@Override
 	public void render(MapView map, MapCanvas canvas, Player player) {
 
@@ -90,9 +86,9 @@ public class YetiMapRenderer extends MapRenderer {
 			canvas.setCursors(coll);
 			
 			try {
-				player.sendMessage("Your " + map.getWorld().getName() + " map is being rendered...");
+				player.sendMessage("Your " + player.getWorld().getName() + " map is being rendered...");
 				BufferedImage img = null;
-				img = ImageIO.read(new File("/srv/minecraft/plugins/yetimap/" + map.getWorld().getName().toString() + ".png"));
+				img = ImageIO.read(new File("/srv/minecraft/plugins/yetimap/" + player.getWorld().getName() + ".png"));
 				canvas.drawImage(0, 0, img);
 				setDirty(player.getName(), false);
 				player.sendMap(map);

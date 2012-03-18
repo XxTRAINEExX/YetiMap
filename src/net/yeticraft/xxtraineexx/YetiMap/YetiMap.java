@@ -18,13 +18,18 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.map.MapView;
 import org.bukkit.plugin.java.JavaPlugin;
+//import java.util.HashMap;
 
 public class YetiMap extends JavaPlugin {
 	Logger log = Logger.getLogger("Minecraft");
 
 	// Create a new YetiMapRenderer object and name it renderer
 	YetiMapRenderer renderer = new YetiMapRenderer();
-	String world = null;
+	// private static Map<Player, YetiMapRenderer> playerRenderers = new HashMap<Player, YetiMapRenderer>();
+	ItemStack yeticraftMap = new ItemStack(Material.MAP,1,(short)0);
+	ItemStack netherMap = new ItemStack(Material.MAP,1,(short)1);
+	
+	
 	
 	// Run this sub when the plugin is enabled	
 	public void onEnable() {
@@ -46,6 +51,13 @@ public class YetiMap extends JavaPlugin {
 			sender.sendMessage(ChatColor.RED + "Must be run by a player.");
 			return true;
 		}
+		
+		/*YetiMapRenderer renderer = playerRenderers.get(player);
+		if (renderer == null)
+		{
+			renderer = new YetiMapRenderer();
+			playerRenderers.put(player, renderer);
+		}*/
 		
 		//Now we see if they typed /map
 		if (cmd.getName().equalsIgnoreCase("map")) {
@@ -72,25 +84,27 @@ public class YetiMap extends JavaPlugin {
 				}
 				
 				//Check to see if they typed "yeticraft" as the first argument after /map
-				if (args[0].equalsIgnoreCase("yeticraft")) {
+				if (args[0].equalsIgnoreCase("yeticraft") && player.getWorld().getName().equalsIgnoreCase("yeticraft")) {
 					
 					//clear the current map
 					renderer.setDirty(player.getName(), true);
 					
 					
 					//Create a short integer to store the mapID of the map they are holding
-					short mapId = currentItem.getData().getData();
+					//short mapId = currentItem.getData().getData();
+					// currentItem.getData().setData((byte) 0);
 					
 					// Create a mapview object called MAP and store this servers map with the ID pulled from the player
-					MapView map = this.getServer().getMap(mapId);
-										
-					// Send the player the entire map
-					//player.sendMap(map);
-					world = "yeticraft";
+					MapView map = this.getServer().getMap((short)0);
+					//player.setItemInHand(new ItemStack(Material.MAP,1,map.getId()));
+					player.setItemInHand(yeticraftMap);
+					
 					
 					// Call the applytomap() function in the maplines object we just created called renderer. Pass it our map 
-					renderer.applyToMap(map, world);
-										
+					
+					renderer.applyToMap(map, player.getWorld().getName(), player);
+					player.sendMessage("You were rendered mapID: " + 0);
+					
 					// Tell the user we are applying their lines
 					//sender.sendMessage("Displaying Map" + mapId);
 					return true;
@@ -98,25 +112,24 @@ public class YetiMap extends JavaPlugin {
 					
 				}
 				//Check to see if they typed "nether" as the first argument after /map
-				if (args[0].equalsIgnoreCase("nether")) {
+				if (args[0].equalsIgnoreCase("nether") && player.getWorld().getName().equalsIgnoreCase("yeticraft_nether")) {
 					
 					//clear the current map
 					renderer.setDirty(player.getName(), true);
 					
 					//Create a short integer to store the mapID of the map they are holding
-					short mapId = currentItem.getData().getData();
+					//short mapId = currentItem.getData().getData();
 					
 					// Create a mapview object called MAP and store this servers map with the ID pulled from the player
-					MapView map = this.getServer().getMap(mapId);
-										
-					// Send the player the entire map
-					//player.sendMap(map);
-					world = "yeticraft_nether";
-									
-										
+					MapView map = this.getServer().getMap((short)1);
+					//player.setItemInHand(new ItemStack(Material.MAP,1,map.getId()));
+					player.setItemInHand(netherMap);
+					
+					
 					// Call the applytomap() function in the maplines object we just created called renderer. Pass it our map 
-					renderer.applyToMap(map, world);
-										
+					renderer.applyToMap(map, player.getWorld().getName(), player);
+					player.sendMessage("You were rendered mapID: " + 1);	
+					
 					// Tell the user we are applying their lines
 					//sender.sendMessage("Displaying Map" + mapId);
 					return true;
@@ -148,7 +161,7 @@ public class YetiMap extends JavaPlugin {
 					
 				}
 				
-				player.sendMessage("You did not enter a valid command. Try /map [yeticraft, nether, reset]");
+				player.sendMessage("You did not enter a valid command. Try /map [yeticraft, nether, reset] and verify you are in the appropriate world for that command");
 				return false;
 			}
 			player.sendMessage("There is not a map in your hand.");
