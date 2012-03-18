@@ -1,9 +1,9 @@
-name: net.yeticraft.xxtraineexx.YetiMap
+name: YetiMap
 main: net.yeticraft.xxtraineexx.YetiMap.YetiMap
-version: 1.1
+version: 2.1
 description: >
-             net.yeticraft.xxtraineexx.YetiMap
+             YetiMap
 commands:
   map:
     description: Interact with the net.yeticraft.xxtraineexx.YetiMap plugin
-    usage: "Usage: '/map [yeticraft, nether, the_end, reset]'"
+    usage: "Usage: '/map [yeticraft, nether, reset]'"
