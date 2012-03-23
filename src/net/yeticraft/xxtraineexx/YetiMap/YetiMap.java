@@ -71,14 +71,14 @@ public class YetiMap extends JavaPlugin {
 			
 				// Check to see if they typed any arguments
 				if (args.length < 1) {
-					player.sendMessage("Missing Argument.. did you type /map [yeticraft, nether, reset]?");
+					player.sendMessage(ChatColor.YELLOW + "Missing Argument.. did you type /map [yeticraft, nether, reset]?");
 					return false;
 				}
 
 				//Check to see if they typed too many arguments
 				if (args.length > 1) {
 					
-					player.sendMessage("Too many Arguments.. did you type /map [yeticraft, nether, reset]?");
+					player.sendMessage(ChatColor.YELLOW + "Too many Arguments.. did you type /map [yeticraft, nether, reset]?");
 					return false;
 					
 				}
@@ -103,7 +103,7 @@ public class YetiMap extends JavaPlugin {
 					// Call the applytomap() function in the maplines object we just created called renderer. Pass it our map 
 					
 					renderer.applyToMap(map, player.getWorld().getName(), player);
-					player.sendMessage("You were rendered mapID: " + 0);
+					player.sendMessage(ChatColor.GRAY + "You were rendered mapID: " + 0);
 					
 					// Tell the user we are applying their lines
 					//sender.sendMessage("Displaying Map" + mapId);
@@ -128,7 +128,7 @@ public class YetiMap extends JavaPlugin {
 					
 					// Call the applytomap() function in the maplines object we just created called renderer. Pass it our map 
 					renderer.applyToMap(map, player.getWorld().getName(), player);
-					player.sendMessage("You were rendered mapID: " + 1);	
+					player.sendMessage(ChatColor.GRAY + "You were rendered mapID: " + 1);	
 					
 					// Tell the user we are applying their lines
 					//sender.sendMessage("Displaying Map" + mapId);
@@ -140,31 +140,28 @@ public class YetiMap extends JavaPlugin {
 				if (args[0].equalsIgnoreCase("reset")) {
 					
 					renderer.setDirty(player.getName(), true);
-					player.sendMessage("Map reset triggered...");
+					player.sendMessage(ChatColor.GRAY + "Map reset triggered...");
 					return true;
 					
 				}
 				
-				if (args[0].equalsIgnoreCase("createimage")) {
+				if (player.hasPermission("yetimap.create") && args[0].equalsIgnoreCase("createimage")) {
 					
-					createImage(player.getWorld(), player, true);
-					player.sendMessage("Generated new image on the server.");
+					//createImage(player.getWorld(), player, true);
+					player.sendMessage(ChatColor.GRAY + "Generated new image on the server.");
 					return true;
-					
 				}
 				
-				if (args[0].equalsIgnoreCase("createimage_nolines")) {
-					
-					createImage(player.getWorld(), player, false);
-					player.sendMessage("Generated new image on the server.");
+				if (player.hasPermission("yetimap.nolines") && args[0].equalsIgnoreCase("createimage_nolines")) {
+					//createImage(player.getWorld(), player, false);
+					player.sendMessage(ChatColor.GRAY + "Generated new image on the server.");
 					return true;
-					
 				}
 				
-				player.sendMessage("You did not enter a valid command. Try /map [yeticraft, nether, reset] and verify you are in the appropriate world for that command");
+				player.sendMessage(ChatColor.YELLOW + "You did not enter a valid command. Try /map [yeticraft, nether, reset]");
 				return false;
 			}
-			player.sendMessage("There is not a map in your hand.");
+			player.sendMessage(ChatColor.YELLOW + "There is not a map in your hand.");
 			return false;
 		}
 					

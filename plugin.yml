@@ -6,4 +6,10 @@ description: >
 commands:
   map:
     description: Interact with the net.yeticraft.xxtraineexx.YetiMap plugin
-    usage: "Usage: '/map [yeticraft, nether, reset]'"
+permissions:
+  yetimap.create:
+    description: Create a yeticraft map image
+    default: op
+  yetimap.nolines:
+    description: Create a yeticraft map image w/no lines
+    default: op
