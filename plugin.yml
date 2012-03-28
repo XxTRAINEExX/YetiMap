@@ -5,7 +5,7 @@ description: >
              YetiMap
 commands:
   map:
-    description: Interact with the net.yeticraft.xxtraineexx.YetiMap plugin
+    description: Type /map <yeticraft/nether/reset> to show a full size map or reset your current map.
 permissions:
   yetimap.create:
     description: Create a yeticraft map image
