@@ -147,13 +147,13 @@ public class YetiMap extends JavaPlugin {
 				
 				if (player.hasPermission("yetimap.create") && args[0].equalsIgnoreCase("createimage")) {
 					
-					//createImage(player.getWorld(), player, true);
+					createImage(player.getWorld(), player, true);
 					player.sendMessage(ChatColor.GRAY + "Generated new image on the server.");
 					return true;
 				}
 				
 				if (player.hasPermission("yetimap.nolines") && args[0].equalsIgnoreCase("createimage_nolines")) {
-					//createImage(player.getWorld(), player, false);
+					createImage(player.getWorld(), player, false);
 					player.sendMessage(ChatColor.GRAY + "Generated new image on the server.");
 					return true;
 				}
@@ -304,6 +304,27 @@ public class YetiMap extends JavaPlugin {
 		
 				// The following was to verify the highest blocks were showing properly in Taiga
 				// player.sendMessage("Taiga block shows: " + world.getHighestBlockAt(2162, 3603).getType().toString());
+				
+				// Making the temples
+				
+				img.setRGB(relMap(-3000), relMap(3125), 16733695);//SRIRANGAN
+				img.setRGB(relMap(-957), relMap(3159), 16733695);//SEVILLE
+				img.setRGB(relMap(973), relMap(3131), 16733695);//ZAHIR
+				img.setRGB(relMap(3018), relMap(3094), 16733695);//CHOLULA
+				img.setRGB(relMap(-3001), relMap(1395), 16733695);//QORIKANCHA
+				img.setRGB(relMap(-1000), relMap(1375), 16733695);//UPPSALA
+				img.setRGB(relMap(1000), relMap(1375), 16733695);//PANTHEON
+				img.setRGB(relMap(3018), relMap(1362), 16733695);//TIKAL
+				img.setRGB(relMap(-2991), relMap(-3138), 16733695);//BEITI
+				img.setRGB(relMap(-1000), relMap(-3099), 16733695);//LUXOR
+				img.setRGB(relMap(1000), relMap(-3124), 16733695);//COBA
+				img.setRGB(relMap(3034), relMap(-3174), 16733695);//TOJI
+				img.setRGB(relMap(-3000), relMap(-1383), 16733695);//BAALBEK
+				img.setRGB(relMap(-954), relMap(-1382), 16733695);//CONFUCION
+				img.setRGB(relMap(1008), relMap(-1373), 16733695);//JOKHANG
+				img.setRGB(relMap(2967), relMap(-1366), 16733695);//PRAMBANAN
+				img.setRGB(relMap(-22), relMap(-109), 16733695);//PARTHENON		
+				
 			}
 			
 			
@@ -313,9 +334,13 @@ public class YetiMap extends JavaPlugin {
 				
 				DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
 				Date date = new Date();
-				player.sendMessage("Saving image to: /srv/minecraft/plugins/yetimap/" + world.getName() + "_" + dateFormat.format(date).toString() + ".png");
-				ImageIO.write(img, "png",new File("/srv/minecraft/plugins/yetimap/" + world.getName() + "_" + dateFormat.format(date).toString() + ".png"));
-		
+				
+				// player.sendMessage("Saving image to: /srv/minecraft/plugins/yetimap/" + world.getName() + "_" + dateFormat.format(date).toString() + ".png");
+				// ImageIO.write(img, "png",new File("/srv/minecraft/plugins/yetimap/" + world.getName() + "_" + dateFormat.format(date).toString() + ".png"));
+				
+				player.sendMessage("Saving image to: D:/minecraftsrv/plugins/yetimap/" + world.getName() + "_" + dateFormat.format(date).toString() + ".png");
+				ImageIO.write(img, "png",new File("D:/minecraftsrv/plugins/yetimap/" + world.getName() + "_" + dateFormat.format(date).toString() + ".png"));
+				
 			}
 			catch (IOException e) {
 				e.printStackTrace();
@@ -324,6 +349,15 @@ public class YetiMap extends JavaPlugin {
 		
 	}
 	
+	public int relMap(float loc){
+		
+		// This method returns the relative map location for a given world location.
+		// This assumes an 8k world.
+		int relativeLoc = (int)(((4000 + loc) / 8000) * 128);
+		return relativeLoc;
+		
+	}
+
 	
 	
 }
