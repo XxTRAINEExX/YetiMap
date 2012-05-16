@@ -21,7 +21,11 @@ public class YetiMapRenderer extends MapRenderer {
 	private boolean dirty;
 	private MapCursor cursor = new MapCursor((byte)0, (byte)0, (byte)0,	MapCursor.Type.WHITE_POINTER.getValue(), true);
 	Logger log = Logger.getLogger("Minecraft");
+	public static YetiMap plugin;
 	
+	public YetiMapRenderer(YetiMap plugin) {
+		YetiMapRenderer.plugin = plugin;
+	}
 	
 //Method to remove other renderers and add my image
 	
@@ -71,6 +75,9 @@ public class YetiMapRenderer extends MapRenderer {
 		if (yaw < 0) { yaw = 360 + yaw; }
 		// throw resulting YAW in to a byte recognized by the cursor object (0-15)
 		byte pos = (byte)Math.rint((yaw/360)*15);
+		// Making sure we didn't end up outside the 0-15 range
+		if (pos > 15) pos = 15;
+		if (pos < 0) pos = 0;
 		// Throw byte at the cursor object if the cursor direction has changed 
 		if (pos != cursor.getDirection()) { cursor.setDirection(pos); }
 			
@@ -86,9 +93,9 @@ public class YetiMapRenderer extends MapRenderer {
 			canvas.setCursors(coll);
 			
 			try {
-				player.sendMessage("Your " + player.getWorld().getName() + " map is being rendered...");
+				player.sendMessage("Your " + player.getWorld().getName() + " map is being rendered.");
 				BufferedImage img = null;
-				img = ImageIO.read(new File("/srv/minecraft/plugins/yetimap/" + player.getWorld().getName() + ".png"));
+				img = ImageIO.read(new File(plugin.getDataFolder().toString() + "\\images\\" + player.getWorld().getName() + ".png"));
 				canvas.drawImage(0, 0, img);
 				setDirty(player.getName(), false);
 				player.sendMap(map);

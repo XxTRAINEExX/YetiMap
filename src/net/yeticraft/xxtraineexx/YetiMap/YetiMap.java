@@ -14,6 +14,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.map.MapView;
@@ -22,9 +23,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class YetiMap extends JavaPlugin {
 	Logger log = Logger.getLogger("Minecraft");
-
+	public FileConfiguration config;
+	public String mapimage;
+	public String prefix = "[YetiMap] ";
+	
 	// Create a new YetiMapRenderer object and name it renderer
-	YetiMapRenderer renderer = new YetiMapRenderer();
+	YetiMapRenderer renderer = new YetiMapRenderer(this);
 	// private static Map<Player, YetiMapRenderer> playerRenderers = new HashMap<Player, YetiMapRenderer>();
 	ItemStack yeticraftMap = new ItemStack(Material.MAP,1,(short)0);
 	ItemStack netherMap = new ItemStack(Material.MAP,1,(short)1);
@@ -34,7 +38,9 @@ public class YetiMap extends JavaPlugin {
 	// Run this sub when the plugin is enabled	
 	public void onEnable() {
 		// log to the minecraft logger 
-		log.info("Loading net.yeticraft.xxtraineexx.YetiMap");
+		log.info("Loading YetiMap");
+		loadMainConfig();
+		
 	}
 
 	// run this sub when the player issues a command
@@ -103,7 +109,6 @@ public class YetiMap extends JavaPlugin {
 					// Call the applytomap() function in the maplines object we just created called renderer. Pass it our map 
 					
 					renderer.applyToMap(map, player.getWorld().getName(), player);
-					player.sendMessage(ChatColor.GRAY + "You were rendered mapID: " + 0);
 					
 					// Tell the user we are applying their lines
 					//sender.sendMessage("Displaying Map" + mapId);
@@ -128,7 +133,6 @@ public class YetiMap extends JavaPlugin {
 					
 					// Call the applytomap() function in the maplines object we just created called renderer. Pass it our map 
 					renderer.applyToMap(map, player.getWorld().getName(), player);
-					player.sendMessage(ChatColor.GRAY + "You were rendered mapID: " + 1);	
 					
 					// Tell the user we are applying their lines
 					//sender.sendMessage("Displaying Map" + mapId);
@@ -338,8 +342,8 @@ public class YetiMap extends JavaPlugin {
 				// player.sendMessage("Saving image to: /srv/minecraft/plugins/yetimap/" + world.getName() + "_" + dateFormat.format(date).toString() + ".png");
 				// ImageIO.write(img, "png",new File("/srv/minecraft/plugins/yetimap/" + world.getName() + "_" + dateFormat.format(date).toString() + ".png"));
 				
-				player.sendMessage("Saving image to: D:/minecraftsrv/plugins/yetimap/" + world.getName() + "_" + dateFormat.format(date).toString() + ".png");
-				ImageIO.write(img, "png",new File("D:/minecraftsrv/plugins/yetimap/" + world.getName() + "_" + dateFormat.format(date).toString() + ".png"));
+				player.sendMessage("Saving image to: " + this.getDataFolder().toString() + "\\images\\" + world.getName() + "_" + dateFormat.format(date).toString() + ".png");
+				ImageIO.write(img, "png",new File(this.getDataFolder().toString() + "\\images\\" + world.getName() + "_" + dateFormat.format(date).toString() + ".png"));
 				
 			}
 			catch (IOException e) {
@@ -358,6 +362,24 @@ public class YetiMap extends JavaPlugin {
 		
 	}
 
-	
+	public void loadMainConfig(){
+		// Read the config file
+    	config = getConfig();
+    	
+    	if (config.getString("mapimage") == null)
+    	{
+    		// mapimage was not set. We need to load the default image.
+    		log.info(prefix + "Map image not found: " + mapimage);
+    		mapimage = (this.getDataFolder().toString() + "\\images\\" + "defaultimage.png");
+    		log.info(prefix + "Loading default image:" + mapimage);
+    		
+        }
+    	else{
+    		mapimage = (this.getDataFolder().toString() + "\\images\\" + config.getString("mapimage"));
+    		log.info(prefix + "Loaded map image: " + mapimage); 
+    	}
+    	
+    	
+	}
 	
 }
